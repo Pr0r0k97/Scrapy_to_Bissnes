@@ -46,6 +46,7 @@ def get_html(url, retry=5):  # Делаем запрос к странице
 
 
 def get_page_data(html):
+    global mail_2, number
     hrefs_data = []
     soup = BeautifulSoup(html, 'lxml')
     ads = soup.find('div', class_='LayoutSearch__serp--3LMVS').find_all('article', class_='Serp__item--NO2th')
@@ -138,7 +139,7 @@ def make_all(url):
 
 
 def main():
-    url = 'https://nova.rambler.ru/search?utm_source=search&utm_campaign=self_promo&utm_medium=form&utm_content=search&query=title%3A(строительная%20компания)%20title%3A(ремонт%20квартир)%20title%3A(ремонт%20офисов)%20title%3A(отделка%20помещений)%20title%3A(Фасадные%20работы)%20title%3A(Благоустройство%20территорий)%20title%3A(Буровые%20работы)%20title%3A(строительство%20домов)%20title%3A(промышленное%20строительство)%20title%3A(отделка%20офисов)%20&page=2'
+    url = 'https://nova.rambler.ru/search?utm_source=search&utm_campaign=self_promo&utm_medium=form&utm_content=search&query="строительная%20компания"&limitcontext=2&page=2'
     #with open('строительная компания.html', 'r', encoding='utf-8') as f:
     #get_page_data(get_html(url))
     text = re.sub(r'page=\d+', 'page={}', url)
