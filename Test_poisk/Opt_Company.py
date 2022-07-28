@@ -44,7 +44,6 @@ def get_html(url, retry=5):  # Делаем запрос к странице
     else:
         return r.text
 
-
 def get_page_data(html):
     global mail_2, number
     hrefs_data = []
@@ -73,6 +72,7 @@ def get_page_data(html):
                                                         r = requests.get(hre, headers=headers)
                                                         soups = BeautifulSoup(r.text, 'lxml')
                                                         try:
+
                                                             mail = soups.find(string=re.compile('\w+\@\w+.\w+')).text.strip()
                                                             if len(mail) < 25:
                                                                 mail_2 = mail.strip()
@@ -84,9 +84,8 @@ def get_page_data(html):
                                                             number = ''
                                                     except Exception as ex:
                                                         continue
-
-                                                data = [(name, mail_2, number, hrefs, description)]
-                                                print(data)
+                                                #data = [(name,  mail_2, number, hrefs, description)]
+                                                #print(data)
                                                 #insert_db(data)
                                             else:
                                                 pass
@@ -143,7 +142,7 @@ def main():
     #with open('строительная компания.html', 'r', encoding='utf-8') as f:
     #get_page_data(get_html(url))
     text = re.sub(r'page=\d+', 'page={}', url)
-    urls = [text.format(str(i)) for i in range(2, 5)]
+    urls = [text.format(str(i)) for i in range(1, 4)]
 
     # Подключаем мультипроцессинг
     with Pool(2) as p:
