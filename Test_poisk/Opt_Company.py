@@ -42,56 +42,71 @@ def get_html(url, retry=5):  # Делаем запрос к странице
     else:
         return r.text
 
+# def scan_tel(arg):
+#     try:
+#         if re.search(r'\b(812)|(921)|(911)\b', arg):
+#             return 'Питер'
+#         elif re.search(r'\b(495)|(499)|(495)|(909)|(916)\b', arg):
+#             return 'Москва'
+#         elif re.search(r'\b(383)\b', arg):
+#             print('Новосибирск')
+#         elif re.search(r'\b(343)\b', arg):
+#             print('Екатеренбург')
+#         elif re.search(r'\b(831)\b', arg):
+#             print('Нижний Новгород')
+#         elif re.search(r'\b(846)\b', arg):
+#             print('Самара')
+#         elif re.search(r'\b(843)\b', arg):
+#             print('Казань')
+#         elif re.search(r'\b(381)\b', arg):
+#             print('Омск')
+#         elif re.search(r'\b(351)\b', arg):
+#             print('Челябинск')
+#         elif re.search(r'\b(863)\b', arg):
+#             print('Ростов')
+#         elif re.search(r'\b(347)\b', arg):
+#             print('Уфа')
+#         elif re.search(r'\b(342)\b', arg):
+#             print('Пермь')
+#         elif re.search(r'\b(844)\b', arg):
+#             print('Волгоград ')
+#         elif re.search(r'\b(391)\b', arg):
+#             print('Красноярск')
+#         elif re.search(r'\b(473)\b', arg):
+#             print('Воронеж')
+#         elif re.search(r'\b(845)\b', arg):
+#             print('Саратов')
+#         elif re.search(r'\b(848)\b', arg):
+#             print('Тольятти')
+#         elif re.search(r'\b(861)|(918)\b', arg):
+#             return 'Краснодар'
+#         elif re.search(r'\b(341)\b', arg):
+#             print('Ижевск')
+#         elif re.search(r'\b(485)\b', arg):
+#             print('Ярославль ')
+#         elif re.search(r'\b(800)\b', arg):
+#             return 'Россия'
+#         else:
+#             return ''
+#     except AttributeError:
+#         pass
+#
+
 def scan_tel(arg):
-    for num in arg:
-        if re.search(r'\b(812)|(921)|(911)\b', num):
-            print('Питер')
-        elif re.search(r'\b(495)|(499)|(495)\b', num):
-            print('Москва')
-        elif re.search(r'\b(383)\b', num):
-            print('Новосибирск')
-        elif re.search(r'\b(343)\b', num):
-            print('Екатеренбург')
-        elif re.search(r'\b(831)\b', num):
-            print('Нижний Новгород')
-        elif re.search(r'\b(846)\b', num):
-            print('Самара')
-        elif re.search(r'\b(843)\b', num):
-            print('Казань')
-        elif re.search(r'\b(381)\b', num):
-            print('Омск')
-        elif re.search(r'\b(351)\b', num):
-            print('Челябинск')
-        elif re.search(r'\b(863)\b', num):
-            print('Ростов')
-        elif re.search(r'\b(347)\b', num):
-            print('Уфа')
-        elif re.search(r'\b(342)\b', num):
-            print('Пермь')
-        elif re.search(r'\b(844)\b', num):
-            print('Волгоград ')
-        elif re.search(r'\b(391)\b', num):
-            print('Красноярск')
-        elif re.search(r'\b(473)\b', num):
-            print('Воронеж')
-        elif re.search(r'\b(845)\b', num):
-            print('Саратов')
-        elif re.search(r'\b(848)\b', num):
-            print('Тольятти')
-        elif re.search(r'\b(861)\b', num):
-            print('Краснодар')
-        elif re.search(r'\b(341)\b', num):
-            print('Ижевск')
-        elif re.search(r'\b(485)\b', num):
-            print('Ярославль ')
-        else:
-           pass
+    data_num = {
+        "number": f"{arg}"
+    }
+    url = 'https://www.kody.su/check-tel'
+    r = requests.post(url, data=data_num, headers=headers)
+    soup = BeautifulSoup(r.text, 'lxml')
+    ads = soup.find('div', class_='content__in').find_all('strong')
+    return ads[1].text.replace(',', '')
 
 
 def get_page_data(html):
-    global mail_2, number
+    global mail_2, number, city
     hrefs_data = []
-    number_data = []
+
     soup = BeautifulSoup(html, 'lxml')
     ads = soup.find('div', class_='LayoutSearch__serp--3LMVS').find_all('article', class_='Serp__item--NO2th')
     for ad in ads:
@@ -108,7 +123,7 @@ def get_page_data(html):
                         if not re.search(r'\bТоп\b', name):
                             if not re.search(r'\bСтроительные\b', name):
                                 if not re.search(r'\bЗастройщики\b', name):
-                                    if not re.search(r'\bРейтинг\b', name):
+                                    if not re.search(r'\bРейтинг|рейтинг\b', name):
                                         if not re.search(r'\bУслуги\b', name):
                                             if not re.search(r'\bЗаказы\b', name):
                                                 hrefs_data.append(hrefs)
@@ -117,22 +132,21 @@ def get_page_data(html):
                                                         r = requests.get(hre, headers=headers)
                                                         soups = BeautifulSoup(r.text, 'lxml')
                                                         try:
-
-                                                            mail = soups.find(
-                                                                string=re.compile('\w+\@\w+.\w+')).text.strip()
+                                                            mail = soups.find(string=re.compile('\w+\@\w+.\w+')).text.strip()
                                                             if len(mail) < 25:
                                                                 mail_2 = mail.strip()
                                                         except:
                                                             mail_2 = ''
                                                         try:
                                                             number = soups.find('a', string=re.compile('(\+7|8).\D*\d{3}\D*\d{3}\D*\d{2}\D*\d{2}')).text.strip()
-                                                            number_data.append(number)
-                                                            scan_tel(number_data)
+                                                            city = scan_tel(number)
+                                                            #number_data.clear()
                                                         except:
                                                             number = ''
+                                                            city = ''
                                                     except Exception as ex:
                                                         continue
-                                                data = [(name, mail_2, number, hrefs, description)]
+                                                data = [(name, mail_2, city, number, hrefs, description)]
                                                 print(data)
                                                 # insert_db(data)
                                             else:
