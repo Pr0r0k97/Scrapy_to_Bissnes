@@ -5,5 +5,5 @@ cursor = conn.cursor()
 
 # Создание таблицы
 cursor.execute("""CREATE TABLE pars
-                  (name text, mail text, number text, hrefs text, description text)
+                  (name text, mail text, city text, number text, hrefs text, description text)
                """)
