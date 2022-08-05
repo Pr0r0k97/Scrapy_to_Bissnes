@@ -81,18 +81,26 @@ def get_page_data(html):
                     soups = BeautifulSoup(r.text, 'lxml')
                     try:
                         mail = soups.find(string=re.compile('\w+\@\w+.\w+')).text.strip()
-                        if len(mail) < 25:
-                            mail_2 = mail.strip()
+                        if mail:
+                            if len(mail) < 25:
+                                mail_2 = mail.strip()
+                            else:
+                                mail_2 = soups.find('a', string=re.compile('\w+\@\w+.\w+')).text
                         else:
-                            mail_2 = ''
+                            mail_2 = soups.find('a', string=re.compile('\w+\@\w+.\w+')).text
                     except:
                         mail_2 = ''
                     try:
-                        number = soups.find("a",
-                                            string=re.compile('(\+7|8).\D*\d{3}\D*\d{3}\D*\d{2}\D*\d{2}')).text.strip()
-                        jso = scan_tel(number)
-                        city = jso['region']
-                        operator = jso['operator']
+                        try:
+                            number = soups.find("a", string=re.compile('(\+7|8).\D*\d{3}\D*\d{3}\D*\d{2}\D*\d{2}')).text.strip()
+                            jso = scan_tel(number)
+                            city = jso['region']
+                            operator = jso['operator']
+                        except:
+                            number = soups.find(string=re.compile('(\+7|8).\D*\d{3}\D*\d{3}\D*\d{2}\D*\d{2}')).text.strip()
+                            jso = scan_tel(number)
+                            city = jso['region']
+                            operator = jso['operator']
                     except:
                         number = ''
                         jso = ''
