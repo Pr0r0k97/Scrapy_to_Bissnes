@@ -6,6 +6,8 @@ import re
 from multiprocessing import Pool
 import colorama
 
+
+
 # запускаем модуль colorama
 colorama.init()
 
@@ -21,35 +23,18 @@ headers = {
 }
 
 
-def retrys(func, retries=5):
-    def retry_wrapper(*args, **kwargs):
-        attempts = 0
-        while attempts < retries:
-            try:
-                return func(*args, **kwargs)
-            except requests.exceptions.RequestException as e:
-                print("Не удалось восстановить подключение!")
-                time.sleep(60)
-                attempts += 1
-
-    return retry_wrapper
-
-
-@retrys
 def get_html(url, retry=5):  # Делаем запрос к странице
+    global item
     try:
         session = requests.session()
         r = session.get(url, headers=headers)
+        if r.ok:
+            item += 1
+            print(f'{item} Выполняется парсинг страницы: {url} ')
+            return r.text
         #print(f'Выполняется парсинг данной страницы {url}')
     except Exception as ex:
-        time.sleep(60)
-        if retry:
-            print(f"INFO retry={retry} => {url}")
-            return get_html(url, retry=(retry - 1))
-        else:
-            raise
-    else:
-        return r.text
+        pass
 
 
 def scan_tel(arg):
@@ -60,7 +45,7 @@ def scan_tel(arg):
     response = requests.request("GET", url, data=payload, params=querystring)
     return response.json()
 
-
+item = 0
 def get_page_data(html, url):
     global mail_2, number, city, operator, number_one, descr
     soup = BeautifulSoup(html, 'lxml')
@@ -68,7 +53,15 @@ def get_page_data(html, url):
     descriptions = soup.find('head').find_all(attrs={"name": "description"})
     for descript in descriptions:
         descr = descript.get('content')
-    if re.search(r'\bСтроительная компания\b', name) or re.search(r'\bстроительная компания\b', name):
+    if re.search(r'\bСтроительная компания\b', name) or re.search(r'\bстроительная компания\b', name) or re.search(r'\bРемонт квартир\b', name)\
+            or re.search(r'\bремонт квартир\b', name) or re.search(r'\bРемонт офисов\b', name) or re.search(r'\bремонт офисов\b', name)\
+            or re.search(r'\bОтделка помещений\b', name) or re.search(r'\bотделка помещений\b', name) or re.search(r'\bФасадные работы\b', name)\
+            or re.search(r'\bфасадные работы\b', name) or re.search(r'\bБлагоустройство территорий\b', name) or re.search(r'\bблагоустройство территорий\b', name)\
+            or re.search(r'\bБуровые работы\b', name) or re.search(r'\bбуровые работы\b', name) or re.search(r'\bВысотные работы\b', name)\
+            or re.search(r'\bвысотные работы\b', name) or re.search(r'\bСтроительство домов\b', name) or re.search(r'\bстроительство домов\b', name)\
+            or re.search(r'\bПромышленное строительство\b', name) or re.search(r'\bпромышленное строительство\b', name) or re.search(r'\bСварочные работы\b', name)\
+            or re.search(r'\bсварочные работы\b', name) or re.search(r'\bПрокладка кабелей\b', name) or re.search(r'\bпрокладка кабелей\b', name)\
+            or re.search(r'\bОтделка офисов\b', name) or re.search(r'\bотделка офисов\b', name):
             try:
                 mail = soup.find(string=re.compile('\w+\@\w+.\w+')).text.strip()
                 if mail:
@@ -98,7 +91,7 @@ def get_page_data(html, url):
                 city = ''
                 operator = ''
             data = [(name, mail_2, city, number, operator, html, descr)]
-            print(f"{GREEN}[+] Title:{RESET} {name}\n"
+            print(f"{item}{GREEN}[+] Title:{RESET} {name}\n"
                   f"{GREEN}[+] Mail:{RESET} {mail_2}\n"
                   f"{GREEN}[+] City:{RESET} {city}\n"
                   f"{GREEN}[+] Number:{RESET} {number}\n"
@@ -148,6 +141,7 @@ def main():
         for line in f:
             url = line.replace('\n', '')
             url_data.append(url)
+
 
         # Подключаем мультипроцессинг
         with Pool(40) as p:
