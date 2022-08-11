@@ -23,18 +23,14 @@ headers = {
 }
 
 
-def get_html(url, retry=5):  # Делаем запрос к странице
-    global item
+def get_html(url):  # Делаем запрос к странице
     try:
-        session = requests.session()
-        r = session.get(url, headers=headers)
+        r = requests.get(url, headers=headers)
         if r.ok:
-            item += 1
-            print(f'{item} Выполняется парсинг страницы: {url} ')
+            print(f'Выполняется парсинг страницы: {url} ')
             return r.text
-        #print(f'Выполняется парсинг данной страницы {url}')
     except Exception as ex:
-        pass
+        print('Не удалось подключится')
 
 
 def scan_tel(arg):
@@ -126,21 +122,19 @@ def end_func(response):
 
 def make_all(url):
     html = get_html(url)
-    get_page_data(html, url)
+    if html != None:
+        get_page_data(html, url)
 
 
 def main():
-    # url = 'https://kvsspb.ru/'
-    # get_page_data(get_html(url))
     url_data = []
-    with open("200_ok.txt", "r") as f:
+    with open("ru_domains_base.txt", "r") as f:
         for line in f:
-            url = line.replace('\n', '')
+            url = 'https://' + line.lower().strip()
             url_data.append(url)
 
-
         # Подключаем мультипроцессинг
-        with Pool(3) as p:
+        with Pool(1) as p:
             p.map_async(make_all, url_data, callback=end_func)
             p.close()
             p.join()
