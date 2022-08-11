@@ -90,7 +90,7 @@ def get_page_data(html, url):
                 jso = ''
                 city = ''
                 operator = ''
-            data = [(name, mail_2, city, number, operator, html, descr)]
+            data = [(name, mail_2, city, number, operator, url, descr)]
             print(f"{item}{GREEN}[+] Title:{RESET} {name}\n"
                   f"{GREEN}[+] Mail:{RESET} {mail_2}\n"
                   f"{GREEN}[+] City:{RESET} {city}\n"
@@ -99,13 +99,9 @@ def get_page_data(html, url):
                   f"{GREEN}[+] Url:{RESET} {url} \n"
                   f"{GREEN}[+] Description:{RESET} {descr}")
             print(f"{YELLOW}#" * 70)
-            #insert_db(data)
+            insert_db(data)
     else:
         pass
-
-
-
-
 
 
 def insert_db(data):
@@ -144,7 +140,7 @@ def main():
 
 
         # Подключаем мультипроцессинг
-        with Pool(40) as p:
+        with Pool(3) as p:
             p.map_async(make_all, url_data, callback=end_func)
             p.close()
             p.join()
