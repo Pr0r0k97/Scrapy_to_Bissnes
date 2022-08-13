@@ -151,7 +151,7 @@ def main():
             url_data.append(url)
 
         # Подключаем мультипроцессинг
-        with Pool(30) as p:
+        with Pool(2) as p:
             p.map_async(make_all, url_data, callback=end_func)
             p.close()
             p.join()
