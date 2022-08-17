@@ -1,3 +1,4 @@
+import multiprocessing
 import time
 import requests
 from bs4 import BeautifulSoup
@@ -26,6 +27,7 @@ headers = {
 def get_html(url):  # Делаем запрос к странице
     try:
         session = requests.session()
+        session.headers =headers
         r = session.get(url, headers=headers)
         if r.status_code == 200:
             print(f'Выполняется парсинг данной страницы {url}')
@@ -33,7 +35,7 @@ def get_html(url):  # Делаем запрос к странице
     except requests.exceptions.HTTPError as errh:
         print("Http Error:", errh)
     except requests.exceptions.ConnectionError as errc:
-        print("Error Connecting:", errc)
+        pass
     except requests.exceptions.Timeout as errt:
         print("Timeout Error:", errt)
     except requests.exceptions.RequestException as err:
@@ -50,7 +52,7 @@ def scan_tel(arg):
     response = requests.request("GET", url, data=payload, params=querystring)
     return response.json()
 
-item = 0
+
 def get_page_data(html, url):
     global mail_2, number, city, operator, number_one, descr
     if html != None:
@@ -103,7 +105,7 @@ def get_page_data(html, url):
                     city = ''
                     operator = ''
                 data = [(name, mail_2, city, number, operator, url, descr)]
-                print(f"{item}{GREEN}[+] Title:{RESET} {name}\n"
+                print(f"{GREEN}[+] Title:{RESET} {name}\n"
                       f"{GREEN}[+] Mail:{RESET} {mail_2}\n"
                       f"{GREEN}[+] City:{RESET} {city}\n"
                       f"{GREEN}[+] Number:{RESET} {number}\n"
@@ -111,7 +113,7 @@ def get_page_data(html, url):
                       f"{GREEN}[+] Url:{RESET} {url} \n"
                       f"{GREEN}[+] Description:{RESET} {descr}")
                 print(f"{YELLOW}#" * 70)
-                insert_db(data)
+                #insert_db(data)
         else:
             pass
 
@@ -143,19 +145,19 @@ def make_all(url):
 
 
 
-def main():
+
+if __name__ == '__main__':
+    multiprocessing.freeze_support()
     url_data = []
+    
+    
     with open("ru_domains_base.txt", "r") as f:
         for line in f:
             url = 'https://' + line.lower().strip()
             url_data.append(url)
+        
 
-        # Подключаем мультипроцессинг
-        with Pool(2) as p:
+        with Pool(3) as p:
             p.map_async(make_all, url_data, callback=end_func)
             p.close()
             p.join()
-
-
-if __name__ == '__main__':
-    main()
