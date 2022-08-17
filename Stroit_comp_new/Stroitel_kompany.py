@@ -33,16 +33,15 @@ def get_html(url):  # Делаем запрос к странице
             #print(f'Выполняется парсинг данной страницы {url}')
             return r.text
     except requests.exceptions.HTTPError as errh:
-        print("Http Error:", errh)
+         pass
     except requests.exceptions.ConnectionError as errc:
         pass
     except requests.exceptions.Timeout as errt:
-        print("Timeout Error:", errt)
+         pass
     except requests.exceptions.RequestException as err:
-        print("OOps: Something Else", err)
-       
+         pass
     except Exception as qwe:
-        print("Exeptions")
+         pass
 
 
 
@@ -754,6 +753,366 @@ def get_page_salon_krasot(html, url):
         else:
             pass
 
+def get_page_restoran(html, url):
+    global mail_2, number, city, operator, number_one, descr
+    if html != None:
+        soup = BeautifulSoup(html, 'lxml')
+        try:
+            name = soup.find('title').text
+        except:
+            name = ''
+        try:
+            descriptions = soup.find('head').find_all(attrs={"name": "description"})
+        except:
+            descriptions = ''
+        for descript in descriptions:
+                descr = descript.get('content') 
+        if re.search(r'\bРесторан\b', name) or re.search(r'\bресторан\b', name) or re.search(r'\bКафе\b', name)\
+            or re.search(r'\bкафе\b', name):
+                try:
+                    mail = soup.find(string=re.compile('\w+\@\w+.\w+')).text.strip()
+                    if mail:
+                        if len(mail) < 25:
+                            mail_2 = mail.strip()
+                        else:
+                            mail_2 = soup.find('a', string=re.compile('\w+\@\w+.\w+')).text
+                    else:
+                        mail_2 = soup.find('a', string=re.compile('\w+\@\w+.\w+')).text
+                except:
+                    mail_2 = ''
+                try:
+                    try:
+                        number = soup.find("a",
+                                            string=re.compile('(\+7|8).\D*\d{3}\D*\d{3}\D*\d{2}\D*\d{2}')).text.strip()
+                        jso = scan_tel(number)
+                        city = jso['region']
+                        operator = jso['operator']
+                    except:
+                        number = soup.find(string=re.compile('(\+7|8).\D*\d{3}\D*\d{3}\D*\d{2}\D*\d{2}')).text.strip()
+                        jso = scan_tel(number)
+                        city = jso['region']
+                        operator = jso['operator']
+                except:
+                    number = ''
+                    jso = ''
+                    city = ''
+                    operator = ''
+                data = [(name, mail_2, city, number, operator, url, descr)]
+                print(f"{GREEN}[+] Title:{RESET} {name}\n"
+                      f"{GREEN}[+] Mail:{RESET} {mail_2}\n"
+                      f"{GREEN}[+] City:{RESET} {city}\n"
+                      f"{GREEN}[+] Number:{RESET} {number}\n"
+                      f"{GREEN}[+] Operator:{RESET} {operator}\n"
+                      f"{GREEN}[+] Url:{RESET} {url} \n"
+                      f"{GREEN}[+] Description:{RESET} {descr}")
+                print(f"{YELLOW}#" * 70)
+                insert_db_restoran(data)
+        else:
+            pass
+
+def get_page_transport_kompany(html, url):
+    global mail_2, number, city, operator, number_one, descr
+    if html != None:
+        soup = BeautifulSoup(html, 'lxml')
+        try:
+            name = soup.find('title').text
+        except:
+            name = ''
+        try:
+            descriptions = soup.find('head').find_all(attrs={"name": "description"})
+        except:
+            descriptions = ''
+        for descript in descriptions:
+                descr = descript.get('content') 
+        if re.search(r'\bГрузоперевозки\b', name) or re.search(r'\bгрузоперевозки\b', name) or re.search(r'\bТранспортная компания\b', name)\
+            or re.search(r'\bтранспортная компания\b', name) or re.search(r'\bДоставка грузов\b', name) or re.search(r'\bдоставка грузов\b', name)\
+            or re.search(r'\bТранспортные услуги\b', name) or re.search(r'\bтранспортные услуги\b', name) or re.search(r'\bМеждународные перевозки\b', name)\
+            or re.search(r'\bмеждународные перевозки\b', name):
+                try:
+                    mail = soup.find(string=re.compile('\w+\@\w+.\w+')).text.strip()
+                    if mail:
+                        if len(mail) < 25:
+                            mail_2 = mail.strip()
+                        else:
+                            mail_2 = soup.find('a', string=re.compile('\w+\@\w+.\w+')).text
+                    else:
+                        mail_2 = soup.find('a', string=re.compile('\w+\@\w+.\w+')).text
+                except:
+                    mail_2 = ''
+                try:
+                    try:
+                        number = soup.find("a",
+                                            string=re.compile('(\+7|8).\D*\d{3}\D*\d{3}\D*\d{2}\D*\d{2}')).text.strip()
+                        jso = scan_tel(number)
+                        city = jso['region']
+                        operator = jso['operator']
+                    except:
+                        number = soup.find(string=re.compile('(\+7|8).\D*\d{3}\D*\d{3}\D*\d{2}\D*\d{2}')).text.strip()
+                        jso = scan_tel(number)
+                        city = jso['region']
+                        operator = jso['operator']
+                except:
+                    number = ''
+                    jso = ''
+                    city = ''
+                    operator = ''
+                data = [(name, mail_2, city, number, operator, url, descr)]
+                print(f"{GREEN}[+] Title:{RESET} {name}\n"
+                      f"{GREEN}[+] Mail:{RESET} {mail_2}\n"
+                      f"{GREEN}[+] City:{RESET} {city}\n"
+                      f"{GREEN}[+] Number:{RESET} {number}\n"
+                      f"{GREEN}[+] Operator:{RESET} {operator}\n"
+                      f"{GREEN}[+] Url:{RESET} {url} \n"
+                      f"{GREEN}[+] Description:{RESET} {descr}")
+                print(f"{YELLOW}#" * 70)
+                insert_db_transport_kompany(data)
+        else:
+            pass
+
+def get_page_torgov_centr(html, url):
+    global mail_2, number, city, operator, number_one, descr
+    if html != None:
+        soup = BeautifulSoup(html, 'lxml')
+        try:
+            name = soup.find('title').text
+        except:
+            name = ''
+        try:
+            descriptions = soup.find('head').find_all(attrs={"name": "description"})
+        except:
+            descriptions = ''
+        for descript in descriptions:
+                descr = descript.get('content') 
+        if re.search(r'\bТорговый центр\b', name) or re.search(r'\bторговый центр\b', name) or re.search(r'\bТоргово развлекательный центр\b', name)\
+            or re.search(r'\bторгово развлекательный центр\b', name) or re.search(r'\bРазвлекательный центр\b', name) or re.search(r'\bразвлекательный центр\b', name)\
+            or re.search(r'\bТорговый центр\b', name) or re.search(r'\bторговый центр\b', name):
+                try:
+                    mail = soup.find(string=re.compile('\w+\@\w+.\w+')).text.strip()
+                    if mail:
+                        if len(mail) < 25:
+                            mail_2 = mail.strip()
+                        else:
+                            mail_2 = soup.find('a', string=re.compile('\w+\@\w+.\w+')).text
+                    else:
+                        mail_2 = soup.find('a', string=re.compile('\w+\@\w+.\w+')).text
+                except:
+                    mail_2 = ''
+                try:
+                    try:
+                        number = soup.find("a",
+                                            string=re.compile('(\+7|8).\D*\d{3}\D*\d{3}\D*\d{2}\D*\d{2}')).text.strip()
+                        jso = scan_tel(number)
+                        city = jso['region']
+                        operator = jso['operator']
+                    except:
+                        number = soup.find(string=re.compile('(\+7|8).\D*\d{3}\D*\d{3}\D*\d{2}\D*\d{2}')).text.strip()
+                        jso = scan_tel(number)
+                        city = jso['region']
+                        operator = jso['operator']
+                except:
+                    number = ''
+                    jso = ''
+                    city = ''
+                    operator = ''
+                data = [(name, mail_2, city, number, operator, url, descr)]
+                print(f"{GREEN}[+] Title:{RESET} {name}\n"
+                      f"{GREEN}[+] Mail:{RESET} {mail_2}\n"
+                      f"{GREEN}[+] City:{RESET} {city}\n"
+                      f"{GREEN}[+] Number:{RESET} {number}\n"
+                      f"{GREEN}[+] Operator:{RESET} {operator}\n"
+                      f"{GREEN}[+] Url:{RESET} {url} \n"
+                      f"{GREEN}[+] Description:{RESET} {descr}")
+                print(f"{YELLOW}#" * 70)
+                insert_db_torgov_centr(data)
+        else:
+            pass
+
+def get_page_otel_gost(html, url):
+    global mail_2, number, city, operator, number_one, descr
+    if html != None:
+        soup = BeautifulSoup(html, 'lxml')
+        try:
+            name = soup.find('title').text
+        except:
+            name = ''
+        try:
+            descriptions = soup.find('head').find_all(attrs={"name": "description"})
+        except:
+            descriptions = ''
+        for descript in descriptions:
+                descr = descript.get('content') 
+        if re.search(r'\bГостиница\b', name) or re.search(r'\bгостиница\b', name) or re.search(r'\bОтель\b', name)\
+            or re.search(r'\bотель\b', name):
+                try:
+                    mail = soup.find(string=re.compile('\w+\@\w+.\w+')).text.strip()
+                    if mail:
+                        if len(mail) < 25:
+                            mail_2 = mail.strip()
+                        else:
+                            mail_2 = soup.find('a', string=re.compile('\w+\@\w+.\w+')).text
+                    else:
+                        mail_2 = soup.find('a', string=re.compile('\w+\@\w+.\w+')).text
+                except:
+                    mail_2 = ''
+                try:
+                    try:
+                        number = soup.find("a",
+                                            string=re.compile('(\+7|8).\D*\d{3}\D*\d{3}\D*\d{2}\D*\d{2}')).text.strip()
+                        jso = scan_tel(number)
+                        city = jso['region']
+                        operator = jso['operator']
+                    except:
+                        number = soup.find(string=re.compile('(\+7|8).\D*\d{3}\D*\d{3}\D*\d{2}\D*\d{2}')).text.strip()
+                        jso = scan_tel(number)
+                        city = jso['region']
+                        operator = jso['operator']
+                except:
+                    number = ''
+                    jso = ''
+                    city = ''
+                    operator = ''
+                data = [(name, mail_2, city, number, operator, url, descr)]
+                print(f"{GREEN}[+] Title:{RESET} {name}\n"
+                      f"{GREEN}[+] Mail:{RESET} {mail_2}\n"
+                      f"{GREEN}[+] City:{RESET} {city}\n"
+                      f"{GREEN}[+] Number:{RESET} {number}\n"
+                      f"{GREEN}[+] Operator:{RESET} {operator}\n"
+                      f"{GREEN}[+] Url:{RESET} {url} \n"
+                      f"{GREEN}[+] Description:{RESET} {descr}")
+                print(f"{YELLOW}#" * 70)
+                insert_db_otel_gost(data)
+        else:
+            pass
+
+def get_page_urist_advokat(html, url):
+    global mail_2, number, city, operator, number_one, descr
+    if html != None:
+        soup = BeautifulSoup(html, 'lxml')
+        try:
+            name = soup.find('title').text
+        except:
+            name = ''
+        try:
+            descriptions = soup.find('head').find_all(attrs={"name": "description"})
+        except:
+            descriptions = ''
+        for descript in descriptions:
+                descr = descript.get('content') 
+        if re.search(r'\bЮрист\b', name) or re.search(r'\bюрист\b', name) or re.search(r'\bАдвокат\b', name)\
+            or re.search(r'\bадвокат\b', name) or re.search(r'\bЮридическая консультация\b', name) or re.search(r'\bюридическая консультация\b', name)\
+            or re.search(r'\bЮридические услуги\b', name) or re.search(r'\bюридические услуги\b', name) or re.search(r'\bЮридическая помощь\b', name)\
+            or re.search(r'\bюридическая помощь\b', name):
+                try:
+                    mail = soup.find(string=re.compile('\w+\@\w+.\w+')).text.strip()
+                    if mail:
+                        if len(mail) < 25:
+                            mail_2 = mail.strip()
+                        else:
+                            mail_2 = soup.find('a', string=re.compile('\w+\@\w+.\w+')).text
+                    else:
+                        mail_2 = soup.find('a', string=re.compile('\w+\@\w+.\w+')).text
+                except:
+                    mail_2 = ''
+                try:
+                    try:
+                        number = soup.find("a",
+                                            string=re.compile('(\+7|8).\D*\d{3}\D*\d{3}\D*\d{2}\D*\d{2}')).text.strip()
+                        jso = scan_tel(number)
+                        city = jso['region']
+                        operator = jso['operator']
+                    except:
+                        number = soup.find(string=re.compile('(\+7|8).\D*\d{3}\D*\d{3}\D*\d{2}\D*\d{2}')).text.strip()
+                        jso = scan_tel(number)
+                        city = jso['region']
+                        operator = jso['operator']
+                except:
+                    number = ''
+                    jso = ''
+                    city = ''
+                    operator = ''
+                data = [(name, mail_2, city, number, operator, url, descr)]
+                print(f"{GREEN}[+] Title:{RESET} {name}\n"
+                      f"{GREEN}[+] Mail:{RESET} {mail_2}\n"
+                      f"{GREEN}[+] City:{RESET} {city}\n"
+                      f"{GREEN}[+] Number:{RESET} {number}\n"
+                      f"{GREEN}[+] Operator:{RESET} {operator}\n"
+                      f"{GREEN}[+] Url:{RESET} {url} \n"
+                      f"{GREEN}[+] Description:{RESET} {descr}")
+                print(f"{YELLOW}#" * 70)
+                insert_db_urist_advokat(data)
+        else:
+            pass
+
+def insert_db_urist_advokat(data):
+    connection = sqlite3.connect("mydatabase_Stoit_Kompani.db")
+    cursor = connection.cursor()
+    urls = [x[5] for x in data]
+    for s in urls:
+        pass
+    cursor.execute(f"SELECT hrefs FROM pars_urist_advokat WHERE hrefs = '{s}'")
+    if cursor.fetchone() is None:
+        cursor.executemany("INSERT INTO pars_urist_advokat VALUES (?,?,?,?,?,?,?)", data)
+        connection.commit()
+        print(f"{RESET}Запись Добавлена ")
+    else:
+        print(f"{RESET}Уже есть")
+
+def insert_db_otel_gost(data):
+    connection = sqlite3.connect("mydatabase_Stoit_Kompani.db")
+    cursor = connection.cursor()
+    urls = [x[5] for x in data]
+    for s in urls:
+        pass
+    cursor.execute(f"SELECT hrefs FROM pars_otel_gost WHERE hrefs = '{s}'")
+    if cursor.fetchone() is None:
+        cursor.executemany("INSERT INTO pars_otel_gost VALUES (?,?,?,?,?,?,?)", data)
+        connection.commit()
+        print(f"{RESET}Запись Добавлена ")
+    else:
+        print(f"{RESET}Уже есть")
+
+def insert_db_torgov_centr(data):
+    connection = sqlite3.connect("mydatabase_Stoit_Kompani.db")
+    cursor = connection.cursor()
+    urls = [x[5] for x in data]
+    for s in urls:
+        pass
+    cursor.execute(f"SELECT hrefs FROM pars_torgov_centr WHERE hrefs = '{s}'")
+    if cursor.fetchone() is None:
+        cursor.executemany("INSERT INTO pars_torgov_centr VALUES (?,?,?,?,?,?,?)", data)
+        connection.commit()
+        print(f"{RESET}Запись Добавлена ")
+    else:
+        print(f"{RESET}Уже есть")
+
+def insert_db_transport_kompany(data):
+    connection = sqlite3.connect("mydatabase_Stoit_Kompani.db")
+    cursor = connection.cursor()
+    urls = [x[5] for x in data]
+    for s in urls:
+        pass
+    cursor.execute(f"SELECT hrefs FROM pars_transport_kompany WHERE hrefs = '{s}'")
+    if cursor.fetchone() is None:
+        cursor.executemany("INSERT INTO pars_transport_kompany VALUES (?,?,?,?,?,?,?)", data)
+        connection.commit()
+        print(f"{RESET}Запись Добавлена ")
+    else:
+        print(f"{RESET}Уже есть")
+
+def insert_db_restoran(data):
+    connection = sqlite3.connect("mydatabase_Stoit_Kompani.db")
+    cursor = connection.cursor()
+    urls = [x[5] for x in data]
+    for s in urls:
+        pass
+    cursor.execute(f"SELECT hrefs FROM pars_restoran WHERE hrefs = '{s}'")
+    if cursor.fetchone() is None:
+        cursor.executemany("INSERT INTO pars_restoran VALUES (?,?,?,?,?,?,?)", data)
+        connection.commit()
+        print(f"{RESET}Запись Добавлена ")
+    else:
+        print(f"{RESET}Уже есть")
+
 def insert_db_salon_krasot(data):
     connection = sqlite3.connect("mydatabase_Stoit_Kompani.db")
     cursor = connection.cursor()
@@ -942,6 +1301,11 @@ def make_all(url):
         get_page_remont_kvartir(html, url)
         get_page_tur_agenstvo(html, url)
         get_page_salon_krasot(html, url)
+        get_page_restoran(html, url)
+        get_page_transport_kompany(html, url)
+        get_page_torgov_centr(html, url)
+        get_page_otel_gost(html, url)
+        get_page_urist_advokat
 
 if __name__ == '__main__':
     multiprocessing.freeze_support()
