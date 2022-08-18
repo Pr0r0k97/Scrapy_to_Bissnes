@@ -1043,6 +1043,371 @@ def get_page_urist_advokat(html, url):
         else:
             pass
 
+def get_page_apteki(html, url):
+    global mail_2, number, city, operator, number_one, descr
+    if html != None:
+        soup = BeautifulSoup(html, 'lxml')
+        try:
+            name = soup.find('title').text
+        except:
+            name = ''
+        try:
+            descriptions = soup.find('head').find_all(attrs={"name": "description"})
+        except:
+            descriptions = ''
+        for descript in descriptions:
+                descr = descript.get('content') 
+        if re.search(r'\bАптека\b', name) or re.search(r'\bаптека\b', name):
+                try:
+                    mail = soup.find(string=re.compile('\w+\@\w+.\w+')).text.strip()
+                    if mail:
+                        if len(mail) < 25:
+                            mail_2 = mail.strip()
+                        else:
+                            mail_2 = soup.find('a', string=re.compile('\w+\@\w+.\w+')).text
+                    else:
+                        mail_2 = soup.find('a', string=re.compile('\w+\@\w+.\w+')).text
+                except:
+                    mail_2 = ''
+                try:
+                    try:
+                        number = soup.find("a",
+                                            string=re.compile('(\+7|8).\D*\d{3}\D*\d{3}\D*\d{2}\D*\d{2}')).text.strip()
+                        jso = scan_tel(number)
+                        city = jso['region']
+                        operator = jso['operator']
+                    except:
+                        number = soup.find(string=re.compile('(\+7|8).\D*\d{3}\D*\d{3}\D*\d{2}\D*\d{2}')).text.strip()
+                        jso = scan_tel(number)
+                        city = jso['region']
+                        operator = jso['operator']
+                except:
+                    number = ''
+                    jso = ''
+                    city = ''
+                    operator = ''
+                data = [(name, mail_2, city, number, operator, url, descr)]
+                print(f"{GREEN}[+] Title:{RESET} {name}\n"
+                      f"{GREEN}[+] Mail:{RESET} {mail_2}\n"
+                      f"{GREEN}[+] City:{RESET} {city}\n"
+                      f"{GREEN}[+] Number:{RESET} {number}\n"
+                      f"{GREEN}[+] Operator:{RESET} {operator}\n"
+                      f"{GREEN}[+] Url:{RESET} {url} \n"
+                      f"{GREEN}[+] Description:{RESET} {descr}")
+                print(f"{YELLOW}#" * 70)
+                insert_db_apteki(data)
+        else:
+            pass
+
+def get_page_reklam_agenstvo(html, url):
+    global mail_2, number, city, operator, number_one, descr
+    if html != None:
+        soup = BeautifulSoup(html, 'lxml')
+        try:
+            name = soup.find('title').text
+        except:
+            name = ''
+        try:
+            descriptions = soup.find('head').find_all(attrs={"name": "description"})
+        except:
+            descriptions = ''
+        for descript in descriptions:
+                descr = descript.get('content') 
+        if re.search(r'\bРекламное агенство\b', name) or re.search(r'\bрекламное агенство\b', name) or re.search(r'\bРеклама яндекс директ\b', name)\
+             or re.search(r'\bреклама яндекс директ\b', name) or re.search(r'\bКонтекстная реклама\b', name) or re.search(r'\bконтекстная реклама\b', name)\
+             or re.search(r'\bПродвижение в интернете\b', name) or re.search(r'\bпродвижение в интернете\b', name) or re.search(r'\bЯндекс директ\b', name)\
+             or re.search(r'\bяндекс директ\b', name) or re.search(r'\bРеклама в интернете\b', name) or re.search(r'\bреклама в интернете\b', name)\
+             or re.search(r'\bПродвижение сайтов\b', name) or re.search(r'\bпродвижение сайтов\b', name)\
+             or re.search(r'\bБаннерная реклама\b', name) or re.search(r'\bбаннерная реклама\b', name) or re.search(r'\bОнлайн маркетинг\b', name)\
+             or re.search(r'\bонлайн маркетинг\b', name):
+                try:
+                    mail = soup.find(string=re.compile('\w+\@\w+.\w+')).text.strip()
+                    if mail:
+                        if len(mail) < 25:
+                            mail_2 = mail.strip()
+                        else:
+                            mail_2 = soup.find('a', string=re.compile('\w+\@\w+.\w+')).text
+                    else:
+                        mail_2 = soup.find('a', string=re.compile('\w+\@\w+.\w+')).text
+                except:
+                    mail_2 = ''
+                try:
+                    try:
+                        number = soup.find("a",
+                                            string=re.compile('(\+7|8).\D*\d{3}\D*\d{3}\D*\d{2}\D*\d{2}')).text.strip()
+                        jso = scan_tel(number)
+                        city = jso['region']
+                        operator = jso['operator']
+                    except:
+                        number = soup.find(string=re.compile('(\+7|8).\D*\d{3}\D*\d{3}\D*\d{2}\D*\d{2}')).text.strip()
+                        jso = scan_tel(number)
+                        city = jso['region']
+                        operator = jso['operator']
+                except:
+                    number = ''
+                    jso = ''
+                    city = ''
+                    operator = ''
+                data = [(name, mail_2, city, number, operator, url, descr)]
+                print(f"{GREEN}[+] Title:{RESET} {name}\n"
+                      f"{GREEN}[+] Mail:{RESET} {mail_2}\n"
+                      f"{GREEN}[+] City:{RESET} {city}\n"
+                      f"{GREEN}[+] Number:{RESET} {number}\n"
+                      f"{GREEN}[+] Operator:{RESET} {operator}\n"
+                      f"{GREEN}[+] Url:{RESET} {url} \n"
+                      f"{GREEN}[+] Description:{RESET} {descr}")
+                print(f"{YELLOW}#" * 70)
+                insert_db_reklam_agenstvo(data)
+        else:
+            pass
+
+def get_page_scklad_komleks(html, url):
+    global mail_2, number, city, operator, number_one, descr
+    if html != None:
+        soup = BeautifulSoup(html, 'lxml')
+        try:
+            name = soup.find('title').text
+        except:
+            name = ''
+        try:
+            descriptions = soup.find('head').find_all(attrs={"name": "description"})
+        except:
+            descriptions = ''
+        for descript in descriptions:
+                descr = descript.get('content') 
+        if re.search(r'\bСкладской комплекс\b', name) or re.search(r'\bскладской комплекс\b', name) or re.search(r'\bСклад\b', name)\
+             or re.search(r'\bсклад\b', name) or re.search(r'\bЛогистический комплекс\b', name) or re.search(r'\bлогистический комплекс\b', name)\
+             or re.search(r'\bАренда склада\b', name) or re.search(r'\bаренда склада\b', name) or re.search(r'\bСклады в аренду\b', name)\
+             or re.search(r'\bсклады в аренду\b', name):
+                try:
+                    mail = soup.find(string=re.compile('\w+\@\w+.\w+')).text.strip()
+                    if mail:
+                        if len(mail) < 25:
+                            mail_2 = mail.strip()
+                        else:
+                            mail_2 = soup.find('a', string=re.compile('\w+\@\w+.\w+')).text
+                    else:
+                        mail_2 = soup.find('a', string=re.compile('\w+\@\w+.\w+')).text
+                except:
+                    mail_2 = ''
+                try:
+                    try:
+                        number = soup.find("a",
+                                            string=re.compile('(\+7|8).\D*\d{3}\D*\d{3}\D*\d{2}\D*\d{2}')).text.strip()
+                        jso = scan_tel(number)
+                        city = jso['region']
+                        operator = jso['operator']
+                    except:
+                        number = soup.find(string=re.compile('(\+7|8).\D*\d{3}\D*\d{3}\D*\d{2}\D*\d{2}')).text.strip()
+                        jso = scan_tel(number)
+                        city = jso['region']
+                        operator = jso['operator']
+                except:
+                    number = ''
+                    jso = ''
+                    city = ''
+                    operator = ''
+                data = [(name, mail_2, city, number, operator, url, descr)]
+                print(f"{GREEN}[+] Title:{RESET} {name}\n"
+                      f"{GREEN}[+] Mail:{RESET} {mail_2}\n"
+                      f"{GREEN}[+] City:{RESET} {city}\n"
+                      f"{GREEN}[+] Number:{RESET} {number}\n"
+                      f"{GREEN}[+] Operator:{RESET} {operator}\n"
+                      f"{GREEN}[+] Url:{RESET} {url} \n"
+                      f"{GREEN}[+] Description:{RESET} {descr}")
+                print(f"{YELLOW}#" * 70)
+                insert_db_scklad_komleks(data)
+        else:
+            pass
+
+def get_page_veterenar(html, url):
+    global mail_2, number, city, operator, number_one, descr
+    if html != None:
+        soup = BeautifulSoup(html, 'lxml')
+        try:
+            name = soup.find('title').text
+        except:
+            name = ''
+        try:
+            descriptions = soup.find('head').find_all(attrs={"name": "description"})
+        except:
+            descriptions = ''
+        for descript in descriptions:
+                descr = descript.get('content') 
+        if re.search(r'\bВетеринарная клиника\b', name) or re.search(r'\bветеринарная клиника\b', name) or re.search(r'\bЛечение животных\b', name)\
+             or re.search(r'\bлечение животных\b', name) or re.search(r'\bВетеринарные услуги\b', name) or re.search(r'\bветеринарные услуги\b', name)\
+             or re.search(r'\bВетеринарная клиника\b', name) or re.search(r'\bветеринарная клиника\b', name):
+                try:
+                    mail = soup.find(string=re.compile('\w+\@\w+.\w+')).text.strip()
+                    if mail:
+                        if len(mail) < 25:
+                            mail_2 = mail.strip()
+                        else:
+                            mail_2 = soup.find('a', string=re.compile('\w+\@\w+.\w+')).text
+                    else:
+                        mail_2 = soup.find('a', string=re.compile('\w+\@\w+.\w+')).text
+                except:
+                    mail_2 = ''
+                try:
+                    try:
+                        number = soup.find("a",
+                                            string=re.compile('(\+7|8).\D*\d{3}\D*\d{3}\D*\d{2}\D*\d{2}')).text.strip()
+                        jso = scan_tel(number)
+                        city = jso['region']
+                        operator = jso['operator']
+                    except:
+                        number = soup.find(string=re.compile('(\+7|8).\D*\d{3}\D*\d{3}\D*\d{2}\D*\d{2}')).text.strip()
+                        jso = scan_tel(number)
+                        city = jso['region']
+                        operator = jso['operator']
+                except:
+                    number = ''
+                    jso = ''
+                    city = ''
+                    operator = ''
+                data = [(name, mail_2, city, number, operator, url, descr)]
+                print(f"{GREEN}[+] Title:{RESET} {name}\n"
+                      f"{GREEN}[+] Mail:{RESET} {mail_2}\n"
+                      f"{GREEN}[+] City:{RESET} {city}\n"
+                      f"{GREEN}[+] Number:{RESET} {number}\n"
+                      f"{GREEN}[+] Operator:{RESET} {operator}\n"
+                      f"{GREEN}[+] Url:{RESET} {url} \n"
+                      f"{GREEN}[+] Description:{RESET} {descr}")
+                print(f"{YELLOW}#" * 70)
+                insert_db_veterenar(data)
+        else:
+            pass
+
+def get_page_notarius(html, url):
+    global mail_2, number, city, operator, number_one, descr
+    if html != None:
+        soup = BeautifulSoup(html, 'lxml')
+        try:
+            name = soup.find('title').text
+        except:
+            name = ''
+        try:
+            descriptions = soup.find('head').find_all(attrs={"name": "description"})
+        except:
+            descriptions = ''
+        for descript in descriptions:
+                descr = descript.get('content') 
+        if re.search(r'\bНотариус\b', name) or re.search(r'\bнотариус\b', name) or re.search(r'\bНотариальные услуги\b', name)\
+             or re.search(r'\bнотариальные услуги\b', name) or re.search(r'\bНотариальная контора\b', name) or re.search(r'\bнотариальная контора\b', name):
+                try:
+                    mail = soup.find(string=re.compile('\w+\@\w+.\w+')).text.strip()
+                    if mail:
+                        if len(mail) < 25:
+                            mail_2 = mail.strip()
+                        else:
+                            mail_2 = soup.find('a', string=re.compile('\w+\@\w+.\w+')).text
+                    else:
+                        mail_2 = soup.find('a', string=re.compile('\w+\@\w+.\w+')).text
+                except:
+                    mail_2 = ''
+                try:
+                    try:
+                        number = soup.find("a",
+                                            string=re.compile('(\+7|8).\D*\d{3}\D*\d{3}\D*\d{2}\D*\d{2}')).text.strip()
+                        jso = scan_tel(number)
+                        city = jso['region']
+                        operator = jso['operator']
+                    except:
+                        number = soup.find(string=re.compile('(\+7|8).\D*\d{3}\D*\d{3}\D*\d{2}\D*\d{2}')).text.strip()
+                        jso = scan_tel(number)
+                        city = jso['region']
+                        operator = jso['operator']
+                except:
+                    number = ''
+                    jso = ''
+                    city = ''
+                    operator = ''
+                data = [(name, mail_2, city, number, operator, url, descr)]
+                print(f"{GREEN}[+] Title:{RESET} {name}\n"
+                      f"{GREEN}[+] Mail:{RESET} {mail_2}\n"
+                      f"{GREEN}[+] City:{RESET} {city}\n"
+                      f"{GREEN}[+] Number:{RESET} {number}\n"
+                      f"{GREEN}[+] Operator:{RESET} {operator}\n"
+                      f"{GREEN}[+] Url:{RESET} {url} \n"
+                      f"{GREEN}[+] Description:{RESET} {descr}")
+                print(f"{YELLOW}#" * 70)
+                insert_db_notarius(data)
+        else:
+            pass
+
+def get_page_proizvoditeli(html, url):
+    global mail_2, number, city, operator, number_one, descr
+    if html != None:
+        soup = BeautifulSoup(html, 'lxml')
+        try:
+            name = soup.find('title').text
+        except:
+            name = ''
+        try:
+            descriptions = soup.find('head').find_all(attrs={"name": "description"})
+        except:
+            descriptions = ''
+        for descript in descriptions:
+                descr = descript.get('content') 
+        if re.search(r'\bПроизводство\b', name) or re.search(r'\bпроизводство\b', name) or re.search(r'\bПроизводитель\b', name)\
+             or re.search(r'\bпроизводитель\b', name):
+                try:
+                    mail = soup.find(string=re.compile('\w+\@\w+.\w+')).text.strip()
+                    if mail:
+                        if len(mail) < 25:
+                            mail_2 = mail.strip()
+                        else:
+                            mail_2 = soup.find('a', string=re.compile('\w+\@\w+.\w+')).text
+                    else:
+                        mail_2 = soup.find('a', string=re.compile('\w+\@\w+.\w+')).text
+                except:
+                    mail_2 = ''
+                try:
+                    try:
+                        number = soup.find("a",
+                                            string=re.compile('(\+7|8).\D*\d{3}\D*\d{3}\D*\d{2}\D*\d{2}')).text.strip()
+                        jso = scan_tel(number)
+                        city = jso['region']
+                        operator = jso['operator']
+                    except:
+                        number = soup.find(string=re.compile('(\+7|8).\D*\d{3}\D*\d{3}\D*\d{2}\D*\d{2}')).text.strip()
+                        jso = scan_tel(number)
+                        city = jso['region']
+                        operator = jso['operator']
+                except:
+                    number = ''
+                    jso = ''
+                    city = ''
+                    operator = ''
+                data = [(name, mail_2, city, number, operator, url, descr)]
+                print(f"{GREEN}[+] Title:{RESET} {name}\n"
+                      f"{GREEN}[+] Mail:{RESET} {mail_2}\n"
+                      f"{GREEN}[+] City:{RESET} {city}\n"
+                      f"{GREEN}[+] Number:{RESET} {number}\n"
+                      f"{GREEN}[+] Operator:{RESET} {operator}\n"
+                      f"{GREEN}[+] Url:{RESET} {url} \n"
+                      f"{GREEN}[+] Description:{RESET} {descr}")
+                print(f"{YELLOW}#" * 70)
+                insert_db_proizvoditelit(data)
+        else:
+            pass
+
+
+
+def insert_db_proizvoditelit(data):
+    connection = sqlite3.connect("mydatabase_Stoit_Kompani.db")
+    cursor = connection.cursor()
+    urls = [x[5] for x in data]
+    for s in urls:
+        pass
+    cursor.execute(f"SELECT hrefs FROM pars_proizvoditelit WHERE hrefs = '{s}'")
+    if cursor.fetchone() is None:
+        cursor.executemany("INSERT INTO pars_proizvoditelit VALUES (?,?,?,?,?,?,?)", data)
+        connection.commit()
+        print(f"{RESET}Запись Добавлена ")
+    else:
+        print(f"{RESET}Уже есть")
+
 def insert_db_urist_advokat(data):
     connection = sqlite3.connect("mydatabase_Stoit_Kompani.db")
     cursor = connection.cursor()
@@ -1052,6 +1417,76 @@ def insert_db_urist_advokat(data):
     cursor.execute(f"SELECT hrefs FROM pars_urist_advokat WHERE hrefs = '{s}'")
     if cursor.fetchone() is None:
         cursor.executemany("INSERT INTO pars_urist_advokat VALUES (?,?,?,?,?,?,?)", data)
+        connection.commit()
+        print(f"{RESET}Запись Добавлена ")
+    else:
+        print(f"{RESET}Уже есть")
+
+def insert_db_apteki(data):
+    connection = sqlite3.connect("mydatabase_Stoit_Kompani.db")
+    cursor = connection.cursor()
+    urls = [x[5] for x in data]
+    for s in urls:
+        pass
+    cursor.execute(f"SELECT hrefs FROM pars_apteki WHERE hrefs = '{s}'")
+    if cursor.fetchone() is None:
+        cursor.executemany("INSERT INTO pars_apteki VALUES (?,?,?,?,?,?,?)", data)
+        connection.commit()
+        print(f"{RESET}Запись Добавлена ")
+    else:
+        print(f"{RESET}Уже есть")
+
+def insert_db_scklad_komleks(data):
+    connection = sqlite3.connect("mydatabase_Stoit_Kompani.db")
+    cursor = connection.cursor()
+    urls = [x[5] for x in data]
+    for s in urls:
+        pass
+    cursor.execute(f"SELECT hrefs FROM pars_scklad_komleks WHERE hrefs = '{s}'")
+    if cursor.fetchone() is None:
+        cursor.executemany("INSERT INTO pars_scklad_komleks VALUES (?,?,?,?,?,?,?)", data)
+        connection.commit()
+        print(f"{RESET}Запись Добавлена ")
+    else:
+        print(f"{RESET}Уже есть")
+
+def insert_db_veterenar(data):
+    connection = sqlite3.connect("mydatabase_Stoit_Kompani.db")
+    cursor = connection.cursor()
+    urls = [x[5] for x in data]
+    for s in urls:
+        pass
+    cursor.execute(f"SELECT hrefs FROM pars_veterenar WHERE hrefs = '{s}'")
+    if cursor.fetchone() is None:
+        cursor.executemany("INSERT INTO pars_veterenar VALUES (?,?,?,?,?,?,?)", data)
+        connection.commit()
+        print(f"{RESET}Запись Добавлена ")
+    else:
+        print(f"{RESET}Уже есть")
+
+def insert_db_reklam_agenstvo(data):
+    connection = sqlite3.connect("mydatabase_Stoit_Kompani.db")
+    cursor = connection.cursor()
+    urls = [x[5] for x in data]
+    for s in urls:
+        pass
+    cursor.execute(f"SELECT hrefs FROM pars_reklam_agenstvo WHERE hrefs = '{s}'")
+    if cursor.fetchone() is None:
+        cursor.executemany("INSERT INTO pars_reklam_agenstvo VALUES (?,?,?,?,?,?,?)", data)
+        connection.commit()
+        print(f"{RESET}Запись Добавлена ")
+    else:
+        print(f"{RESET}Уже есть")
+
+def insert_db_notarius(data):
+    connection = sqlite3.connect("mydatabase_Stoit_Kompani.db")
+    cursor = connection.cursor()
+    urls = [x[5] for x in data]
+    for s in urls:
+        pass
+    cursor.execute(f"SELECT hrefs FROM pars_notarius WHERE hrefs = '{s}'")
+    if cursor.fetchone() is None:
+        cursor.executemany("INSERT INTO pars_notarius VALUES (?,?,?,?,?,?,?)", data)
         connection.commit()
         print(f"{RESET}Запись Добавлена ")
     else:
@@ -1305,7 +1740,13 @@ def make_all(url):
         get_page_transport_kompany(html, url)
         get_page_torgov_centr(html, url)
         get_page_otel_gost(html, url)
-        get_page_urist_advokat
+        get_page_urist_advokat(html, url)
+        get_page_apteki(html, url)
+        get_page_reklam_agenstvo(html, url)
+        get_page_scklad_komleks(html, url)
+        get_page_veterenar(html, url)
+        get_page_notarius(html, url)
+        get_page_proizvoditeli(html, url)
 
 if __name__ == '__main__':
     multiprocessing.freeze_support()
@@ -1317,7 +1758,7 @@ if __name__ == '__main__':
             url = 'https://' + line.lower().strip()
             url_data.append(url)
         
-        with Pool(50) as p:
+        with Pool(40) as p:
             try:
                 for _ in tqdm.tqdm(p.imap_unordered(make_all, url_data), total=len(url_data)):
                     pass
