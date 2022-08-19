@@ -1,4 +1,5 @@
 import multiprocessing
+from os import cpu_count
 import requests
 from bs4 import BeautifulSoup
 import sqlite3
@@ -6,7 +7,15 @@ import re
 from multiprocessing import Pool
 import colorama
 import tqdm
+import logging
 
+
+logging.basicConfig(
+    filename='HISTORYlistener.log',
+    level=logging.DEBUG,
+    format='%(asctime)s.%(msecs)03d %(levelname)s %(module)s - %(funcName)s: %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+)
 
 # запускаем модуль colorama
 colorama.init()
@@ -1757,8 +1766,9 @@ if __name__ == '__main__':
         for line in f:
             url = 'https://' + line.lower().strip()
             url_data.append(url)
+        print(multiprocessing.cpu_count() * 3)
         
-        with Pool(40) as p:
+        with Pool(multiprocessing.cpu_count()) as p:
             try:
                 for _ in tqdm.tqdm(p.imap_unordered(make_all, url_data), total=len(url_data)):
                     pass
