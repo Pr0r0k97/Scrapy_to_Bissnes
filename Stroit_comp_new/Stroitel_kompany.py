@@ -77,7 +77,10 @@ def get_page_data(html, url):
         except:
             descriptions = ''
         for descript in descriptions:
-            descr = descript.get('content')
+            try:
+                descr = descript.get('content')
+            except:
+                descr = ''
         if re.search(r'\bСтроительная компания\b', name) or re.search(r'\bстроительная компания\b', name) or re.search(r'\bРемонт квартир\b', name)\
                 or re.search(r'\bремонт квартир\b', name) or re.search(r'\bРемонт офисов\b', name) or re.search(r'\bремонт офисов\b', name)\
                 or re.search(r'\bОтделка помещений\b', name) or re.search(r'\bотделка помещений\b', name) or re.search(r'\bФасадные работы\b', name)\
@@ -141,7 +144,10 @@ def get_page_data_internet_magaz(html, url):
         except:
             descriptions = ''
         for descript in descriptions:
+            try:
                 descr = descript.get('content') 
+            except:
+                descr = ''
         if re.search(r'\bИнтернет магазин\b', name) or re.search(r'\bинтернет магазин\b', name):
                 try:
                     mail = soup.find(string=re.compile('\w+\@\w+.\w+')).text.strip()
@@ -197,7 +203,10 @@ def get_page_data_med_centr(html, url):
         except:
             descriptions = ''
         for descript in descriptions:
-                descr = descript.get('content') 
+                try:
+                    descr = descript.get('content') 
+                except:
+                    descr = ''
         if re.search(r'\bМедицинский центр\b', name) or re.search(r'\bмедицинский центр\b', name):
                 try:
                     mail = soup.find(string=re.compile('\w+\@\w+.\w+')).text.strip()
@@ -253,7 +262,10 @@ def get_page_data_opt_company(html, url):
         except:
             descriptions = ''
         for descript in descriptions:
+            try:
                 descr = descript.get('content') 
+            except:
+                descr = ''    
         if re.search(r'\bДистрибутор\b', name) or re.search(r'\bдистрибутор\b', name) or re.search(r'\bДистрибьютор\b', name)\
             or re.search(r'\bдистрибьютор\b', name) or re.search(r'\bПоставщик\b', name) or re.search(r'\bпоставщик\b', name)\
             or re.search(r'\bОптовая компания\b', name) or re.search(r'\bоптовая компания\b', name) or re.search(r'\bТовары оптом\b', name)\
@@ -314,7 +326,10 @@ def get_page_data_stomatolog(html, url):
         except:
             descriptions = ''
         for descript in descriptions:
+            try:
                 descr = descript.get('content') 
+            except:
+                descr = ''    
         if re.search(r'\bСтоматология\b', name) or re.search(r'\bстоматология\b', name):
                 try:
                     mail = soup.find(string=re.compile('\w+\@\w+.\w+')).text.strip()
@@ -370,7 +385,10 @@ def get_page_data_proizvodstvo_kompany(html, url):
         except:
             descriptions = ''
         for descript in descriptions:
+            try:
                 descr = descript.get('content') 
+            except:
+                descr = ''    
         if re.search(r'\bПроизводство\b', name) or re.search(r'\bпроизводство\b', name) or re.search(r'\bПроизводитель\b', name)\
             or re.search(r'\bпроизводитель\b', name):
                 try:
@@ -427,7 +445,10 @@ def get_page_data_avtoServis(html, url):
         except:
             descriptions = ''
         for descript in descriptions:
+            try:
                 descr = descript.get('content') 
+            except:
+                descr = ''    
         if re.search(r'\bАвтосервис\b', name) or re.search(r'\bавтосервис\b', name) or re.search(r'\bКузовной ремонт\b', name)\
             or re.search(r'\bкузовной ремонт\b', name):
                 try:
@@ -484,7 +505,10 @@ def get_page_Agent_nedvizhimosti(html, url):
         except:
             descriptions = ''
         for descript in descriptions:
+            try:
                 descr = descript.get('content') 
+            except:
+                descr = ''    
         if re.search(r'\bАгентство недвижимости\b', name) or re.search(r'\bагентство недвижимости\b', name) or re.search(r'\bКупить квартиру\b', name)\
             or re.search(r'\bкупить квартиру\b', name):
                 try:
@@ -541,7 +565,10 @@ def get_page_ChinoMontaz(html, url):
         except:
             descriptions = ''
         for descript in descriptions:
+            try:
                 descr = descript.get('content') 
+            except:
+                descr = ''
         if re.search(r'\bШиномонтаж\b', name) or re.search(r'\bшиномонтаж\b', name) or re.search(r'\bРемонт колес\b', name)\
             or re.search(r'\bремонт колес\b', name):
                 try:
@@ -598,7 +625,10 @@ def get_page_remont_kvartir(html, url):
         except:
             descriptions = ''
         for descript in descriptions:
+            try:
                 descr = descript.get('content') 
+            except:
+                descr  = ''    
         if re.search(r'\bОтделка квартир\b', name) or re.search(r'\bотделка квартир\b', name) or re.search(r'\bОтделка офисов\b', name)\
             or re.search(r'\bотделка офисов\b', name) or re.search(r'\bРемонт квартир\b', name) or re.search(r'\bремонт квартир\b', name)\
                 or re.search(r'\bРемонт офисов\b', name) or re.search(r'\bРемонт офисов\b', name):
@@ -656,7 +686,10 @@ def get_page_tur_agenstvo(html, url):
         except:
             descriptions = ''
         for descript in descriptions:
+            try:
                 descr = descript.get('content') 
+            except:
+                descr = ''    
         if re.search(r'\bТуристическое агентство\b', name) or re.search(r'\bтуристическое агентство\b', name) or re.search(r'\bГорящие туры\b', name)\
             or re.search(r'\bгорящие туры\b', name) or re.search(r'\bКупить тур\b', name) or re.search(r'\bкупить тур\b', name)\
             or re.search(r'\bКупить путевку\b', name) or re.search(r'\bкупить путевку\b', name)\
@@ -715,7 +748,10 @@ def get_page_salon_krasot(html, url):
         except:
             descriptions = ''
         for descript in descriptions:
+            try:
                 descr = descript.get('content') 
+            except:
+                descr = ''    
         if re.search(r'\bСалон красоты\b', name) or re.search(r'\bсалон красоты\b', name) or re.search(r'\bКосметология\b', name)\
             or re.search(r'\bкосметология\b', name) or re.search(r'\bКосметолог\b', name) or re.search(r'\bкосметолог\b', name)\
             or re.search(r'\bSPA салон\b', name) or re.search(r'\bСтудия маникюра\b', name)\
@@ -775,7 +811,10 @@ def get_page_restoran(html, url):
         except:
             descriptions = ''
         for descript in descriptions:
+            try:
                 descr = descript.get('content') 
+            except:
+                descr = ''    
         if re.search(r'\bРесторан\b', name) or re.search(r'\bресторан\b', name) or re.search(r'\bКафе\b', name)\
             or re.search(r'\bкафе\b', name):
                 try:
@@ -832,7 +871,10 @@ def get_page_transport_kompany(html, url):
         except:
             descriptions = ''
         for descript in descriptions:
+            try:
                 descr = descript.get('content') 
+            except:
+                descr = ''    
         if re.search(r'\bГрузоперевозки\b', name) or re.search(r'\bгрузоперевозки\b', name) or re.search(r'\bТранспортная компания\b', name)\
             or re.search(r'\bтранспортная компания\b', name) or re.search(r'\bДоставка грузов\b', name) or re.search(r'\bдоставка грузов\b', name)\
             or re.search(r'\bТранспортные услуги\b', name) or re.search(r'\bтранспортные услуги\b', name) or re.search(r'\bМеждународные перевозки\b', name)\
@@ -891,7 +933,10 @@ def get_page_torgov_centr(html, url):
         except:
             descriptions = ''
         for descript in descriptions:
+            try:
                 descr = descript.get('content') 
+            except:
+                descr = ''    
         if re.search(r'\bТорговый центр\b', name) or re.search(r'\bторговый центр\b', name) or re.search(r'\bТоргово развлекательный центр\b', name)\
             or re.search(r'\bторгово развлекательный центр\b', name) or re.search(r'\bРазвлекательный центр\b', name) or re.search(r'\bразвлекательный центр\b', name)\
             or re.search(r'\bТорговый центр\b', name) or re.search(r'\bторговый центр\b', name):
@@ -949,7 +994,10 @@ def get_page_otel_gost(html, url):
         except:
             descriptions = ''
         for descript in descriptions:
+            try:
                 descr = descript.get('content') 
+            except:
+                descr = ''    
         if re.search(r'\bГостиница\b', name) or re.search(r'\bгостиница\b', name) or re.search(r'\bОтель\b', name)\
             or re.search(r'\bотель\b', name):
                 try:
@@ -1006,7 +1054,10 @@ def get_page_urist_advokat(html, url):
         except:
             descriptions = ''
         for descript in descriptions:
+            try:
                 descr = descript.get('content') 
+            except:
+                descr = ''    
         if re.search(r'\bЮрист\b', name) or re.search(r'\bюрист\b', name) or re.search(r'\bАдвокат\b', name)\
             or re.search(r'\bадвокат\b', name) or re.search(r'\bЮридическая консультация\b', name) or re.search(r'\bюридическая консультация\b', name)\
             or re.search(r'\bЮридические услуги\b', name) or re.search(r'\bюридические услуги\b', name) or re.search(r'\bЮридическая помощь\b', name)\
@@ -1065,7 +1116,10 @@ def get_page_apteki(html, url):
         except:
             descriptions = ''
         for descript in descriptions:
+            try:
                 descr = descript.get('content') 
+            except:
+                descr = '' 
         if re.search(r'\bАптека\b', name) or re.search(r'\bаптека\b', name):
                 try:
                     mail = soup.find(string=re.compile('\w+\@\w+.\w+')).text.strip()
@@ -1121,7 +1175,10 @@ def get_page_reklam_agenstvo(html, url):
         except:
             descriptions = ''
         for descript in descriptions:
+            try:
                 descr = descript.get('content') 
+            except:
+                descr = ''
         if re.search(r'\bРекламное агенство\b', name) or re.search(r'\bрекламное агенство\b', name) or re.search(r'\bРеклама яндекс директ\b', name)\
              or re.search(r'\bреклама яндекс директ\b', name) or re.search(r'\bКонтекстная реклама\b', name) or re.search(r'\bконтекстная реклама\b', name)\
              or re.search(r'\bПродвижение в интернете\b', name) or re.search(r'\bпродвижение в интернете\b', name) or re.search(r'\bЯндекс директ\b', name)\
@@ -1183,7 +1240,10 @@ def get_page_scklad_komleks(html, url):
         except:
             descriptions = ''
         for descript in descriptions:
+            try:
                 descr = descript.get('content') 
+            except:
+                descr = ''    
         if re.search(r'\bСкладской комплекс\b', name) or re.search(r'\bскладской комплекс\b', name) or re.search(r'\bСклад\b', name)\
              or re.search(r'\bсклад\b', name) or re.search(r'\bЛогистический комплекс\b', name) or re.search(r'\bлогистический комплекс\b', name)\
              or re.search(r'\bАренда склада\b', name) or re.search(r'\bаренда склада\b', name) or re.search(r'\bСклады в аренду\b', name)\
@@ -1242,7 +1302,10 @@ def get_page_veterenar(html, url):
         except:
             descriptions = ''
         for descript in descriptions:
+            try:
                 descr = descript.get('content') 
+            except:
+                descr = ''    
         if re.search(r'\bВетеринарная клиника\b', name) or re.search(r'\bветеринарная клиника\b', name) or re.search(r'\bЛечение животных\b', name)\
              or re.search(r'\bлечение животных\b', name) or re.search(r'\bВетеринарные услуги\b', name) or re.search(r'\bветеринарные услуги\b', name)\
              or re.search(r'\bВетеринарная клиника\b', name) or re.search(r'\bветеринарная клиника\b', name):
@@ -1300,7 +1363,10 @@ def get_page_notarius(html, url):
         except:
             descriptions = ''
         for descript in descriptions:
+            try:
                 descr = descript.get('content') 
+            except:
+                descr = ''    
         if re.search(r'\bНотариус\b', name) or re.search(r'\bнотариус\b', name) or re.search(r'\bНотариальные услуги\b', name)\
              or re.search(r'\bнотариальные услуги\b', name) or re.search(r'\bНотариальная контора\b', name) or re.search(r'\bнотариальная контора\b', name):
                 try:
@@ -1357,7 +1423,10 @@ def get_page_proizvoditeli(html, url):
         except:
             descriptions = ''
         for descript in descriptions:
+            try:
                 descr = descript.get('content') 
+            except:
+                descr = ''
         if re.search(r'\bПроизводство\b', name) or re.search(r'\bпроизводство\b', name) or re.search(r'\bПроизводитель\b', name)\
              or re.search(r'\bпроизводитель\b', name):
                 try:
