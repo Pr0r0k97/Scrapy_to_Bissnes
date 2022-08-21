@@ -1,5 +1,4 @@
 import multiprocessing
-from os import cpu_count
 import requests
 from bs4 import BeautifulSoup
 import sqlite3
@@ -8,6 +7,7 @@ from multiprocessing import Pool
 import colorama
 import tqdm
 import logging
+
 
 
 logging.basicConfig(
@@ -56,18 +56,24 @@ def get_html(url):  # Делаем запрос к странице
 
 
 def scan_tel(arg):
-    ar = arg.replace(" ", '').replace("-", '').replace("(", '').replace(")", '')
-    url = "http://num.voxlink.ru/get/"
-    querystring = {"num": f"{ar}"}
-    payload = ""
-    response = requests.request("GET", url, data=payload, params=querystring)
-    return response.json()
+    try:
+        ar = arg.replace(" ", '').replace("-", '').replace("(", '').replace(")", '')
+        url = "http://num.voxlink.ru/get/"
+        querystring = {"num": f"{ar}"}
+        payload = ""
+        response = requests.request("GET", url, data=payload, params=querystring)
+        return response.json()
+    except Exception:
+        pass
 
 
 def get_page_data(html, url):
     global mail_2, number, city, operator, number_one, descr
     if html != None:
-        soup = BeautifulSoup(html, 'lxml')
+        try:
+            soup = BeautifulSoup(html, 'lxml')
+        except:
+            soup = ''    
         try:
             name = soup.find('title').text
         except:
@@ -78,7 +84,7 @@ def get_page_data(html, url):
             descriptions = ''
         for descript in descriptions:
             try:
-                descr = descript.get('content')
+                descr = descript.get('content') 
             except:
                 descr = ''
         if re.search(r'\bСтроительная компания\b', name) or re.search(r'\bстроительная компания\b', name) or re.search(r'\bРемонт квартир\b', name)\
@@ -134,7 +140,10 @@ def get_page_data(html, url):
 def get_page_data_internet_magaz(html, url):
     global mail_2, number, city, operator, number_one, descr
     if html != None:
-        soup = BeautifulSoup(html, 'lxml')
+        try:
+            soup = BeautifulSoup(html, 'lxml')
+        except:
+            soup = ''
         try:
             name = soup.find('title').text
         except:
@@ -193,7 +202,10 @@ def get_page_data_internet_magaz(html, url):
 def get_page_data_med_centr(html, url):
     global mail_2, number, city, operator, number_one, descr
     if html != None:
-        soup = BeautifulSoup(html, 'lxml')
+        try:
+            soup = BeautifulSoup(html, 'lxml')
+        except:
+            soup = ''
         try:
             name = soup.find('title').text
         except:
@@ -203,10 +215,10 @@ def get_page_data_med_centr(html, url):
         except:
             descriptions = ''
         for descript in descriptions:
-                try:
-                    descr = descript.get('content') 
-                except:
-                    descr = ''
+            try:
+                descr = descript.get('content') 
+            except:
+                descr = ''
         if re.search(r'\bМедицинский центр\b', name) or re.search(r'\bмедицинский центр\b', name):
                 try:
                     mail = soup.find(string=re.compile('\w+\@\w+.\w+')).text.strip()
@@ -252,7 +264,10 @@ def get_page_data_med_centr(html, url):
 def get_page_data_opt_company(html, url):
     global mail_2, number, city, operator, number_one, descr
     if html != None:
-        soup = BeautifulSoup(html, 'lxml')
+        try:
+            soup = BeautifulSoup(html, 'lxml')
+        except:
+            soup = ''
         try:
             name = soup.find('title').text
         except:
@@ -316,7 +331,10 @@ def get_page_data_opt_company(html, url):
 def get_page_data_stomatolog(html, url):
     global mail_2, number, city, operator, number_one, descr
     if html != None:
-        soup = BeautifulSoup(html, 'lxml')
+        try:
+            soup = BeautifulSoup(html, 'lxml')
+        except:
+            soup = ''
         try:
             name = soup.find('title').text
         except:
@@ -375,7 +393,10 @@ def get_page_data_stomatolog(html, url):
 def get_page_data_proizvodstvo_kompany(html, url):
     global mail_2, number, city, operator, number_one, descr
     if html != None:
-        soup = BeautifulSoup(html, 'lxml')
+        try:
+            soup = BeautifulSoup(html, 'lxml')
+        except:
+            soup = ''
         try:
             name = soup.find('title').text
         except:
@@ -435,7 +456,10 @@ def get_page_data_proizvodstvo_kompany(html, url):
 def get_page_data_avtoServis(html, url):
     global mail_2, number, city, operator, number_one, descr
     if html != None:
-        soup = BeautifulSoup(html, 'lxml')
+        try:
+            soup = BeautifulSoup(html, 'lxml')
+        except:
+            soup = ''
         try:
             name = soup.find('title').text
         except:
@@ -495,7 +519,10 @@ def get_page_data_avtoServis(html, url):
 def get_page_Agent_nedvizhimosti(html, url):
     global mail_2, number, city, operator, number_one, descr
     if html != None:
-        soup = BeautifulSoup(html, 'lxml')
+        try:
+            soup = BeautifulSoup(html, 'lxml')
+        except:
+            soup = ''
         try:
             name = soup.find('title').text
         except:
@@ -555,7 +582,10 @@ def get_page_Agent_nedvizhimosti(html, url):
 def get_page_ChinoMontaz(html, url):
     global mail_2, number, city, operator, number_one, descr
     if html != None:
-        soup = BeautifulSoup(html, 'lxml')
+        try:
+            soup = BeautifulSoup(html, 'lxml')
+        except:
+            soup = ''
         try:
             name = soup.find('title').text
         except:
@@ -615,7 +645,10 @@ def get_page_ChinoMontaz(html, url):
 def get_page_remont_kvartir(html, url):
     global mail_2, number, city, operator, number_one, descr
     if html != None:
-        soup = BeautifulSoup(html, 'lxml')
+        try:
+            soup = BeautifulSoup(html, 'lxml')
+        except:
+            soup = ''
         try:
             name = soup.find('title').text
         except:
@@ -628,7 +661,7 @@ def get_page_remont_kvartir(html, url):
             try:
                 descr = descript.get('content') 
             except:
-                descr  = ''    
+                descr = ''   
         if re.search(r'\bОтделка квартир\b', name) or re.search(r'\bотделка квартир\b', name) or re.search(r'\bОтделка офисов\b', name)\
             or re.search(r'\bотделка офисов\b', name) or re.search(r'\bРемонт квартир\b', name) or re.search(r'\bремонт квартир\b', name)\
                 or re.search(r'\bРемонт офисов\b', name) or re.search(r'\bРемонт офисов\b', name):
@@ -676,7 +709,10 @@ def get_page_remont_kvartir(html, url):
 def get_page_tur_agenstvo(html, url):
     global mail_2, number, city, operator, number_one, descr
     if html != None:
-        soup = BeautifulSoup(html, 'lxml')
+        try:
+            soup = BeautifulSoup(html, 'lxml')
+        except:
+            soup = ''
         try:
             name = soup.find('title').text
         except:
@@ -738,7 +774,10 @@ def get_page_tur_agenstvo(html, url):
 def get_page_salon_krasot(html, url):
     global mail_2, number, city, operator, number_one, descr
     if html != None:
-        soup = BeautifulSoup(html, 'lxml')
+        try:
+            soup = BeautifulSoup(html, 'lxml')
+        except:
+            soup = ''
         try:
             name = soup.find('title').text
         except:
@@ -801,7 +840,10 @@ def get_page_salon_krasot(html, url):
 def get_page_restoran(html, url):
     global mail_2, number, city, operator, number_one, descr
     if html != None:
-        soup = BeautifulSoup(html, 'lxml')
+        try:
+            soup = BeautifulSoup(html, 'lxml')
+        except:
+            soup = ''
         try:
             name = soup.find('title').text
         except:
@@ -861,7 +903,10 @@ def get_page_restoran(html, url):
 def get_page_transport_kompany(html, url):
     global mail_2, number, city, operator, number_one, descr
     if html != None:
-        soup = BeautifulSoup(html, 'lxml')
+        try:
+            soup = BeautifulSoup(html, 'lxml')
+        except:
+            soup = ''
         try:
             name = soup.find('title').text
         except:
@@ -923,7 +968,10 @@ def get_page_transport_kompany(html, url):
 def get_page_torgov_centr(html, url):
     global mail_2, number, city, operator, number_one, descr
     if html != None:
-        soup = BeautifulSoup(html, 'lxml')
+        try:
+            soup = BeautifulSoup(html, 'lxml')
+        except:
+            soup = ''
         try:
             name = soup.find('title').text
         except:
@@ -984,7 +1032,10 @@ def get_page_torgov_centr(html, url):
 def get_page_otel_gost(html, url):
     global mail_2, number, city, operator, number_one, descr
     if html != None:
-        soup = BeautifulSoup(html, 'lxml')
+        try:
+            soup = BeautifulSoup(html, 'lxml')
+        except:
+            soup = ''
         try:
             name = soup.find('title').text
         except:
@@ -1044,7 +1095,10 @@ def get_page_otel_gost(html, url):
 def get_page_urist_advokat(html, url):
     global mail_2, number, city, operator, number_one, descr
     if html != None:
-        soup = BeautifulSoup(html, 'lxml')
+        try:
+            soup = BeautifulSoup(html, 'lxml')
+        except:
+            soup = ''
         try:
             name = soup.find('title').text
         except:
@@ -1057,7 +1111,7 @@ def get_page_urist_advokat(html, url):
             try:
                 descr = descript.get('content') 
             except:
-                descr = ''    
+                descr = ''  
         if re.search(r'\bЮрист\b', name) or re.search(r'\bюрист\b', name) or re.search(r'\bАдвокат\b', name)\
             or re.search(r'\bадвокат\b', name) or re.search(r'\bЮридическая консультация\b', name) or re.search(r'\bюридическая консультация\b', name)\
             or re.search(r'\bЮридические услуги\b', name) or re.search(r'\bюридические услуги\b', name) or re.search(r'\bЮридическая помощь\b', name)\
@@ -1106,7 +1160,10 @@ def get_page_urist_advokat(html, url):
 def get_page_apteki(html, url):
     global mail_2, number, city, operator, number_one, descr
     if html != None:
-        soup = BeautifulSoup(html, 'lxml')
+        try:
+            soup = BeautifulSoup(html, 'lxml')
+        except:
+            soup = ''
         try:
             name = soup.find('title').text
         except:
@@ -1165,7 +1222,10 @@ def get_page_apteki(html, url):
 def get_page_reklam_agenstvo(html, url):
     global mail_2, number, city, operator, number_one, descr
     if html != None:
-        soup = BeautifulSoup(html, 'lxml')
+        try:
+            soup = BeautifulSoup(html, 'lxml')
+        except:
+            soup = ''
         try:
             name = soup.find('title').text
         except:
@@ -1230,7 +1290,10 @@ def get_page_reklam_agenstvo(html, url):
 def get_page_scklad_komleks(html, url):
     global mail_2, number, city, operator, number_one, descr
     if html != None:
-        soup = BeautifulSoup(html, 'lxml')
+        try:
+            soup = BeautifulSoup(html, 'lxml')
+        except:
+            soup = ''
         try:
             name = soup.find('title').text
         except:
@@ -1292,7 +1355,10 @@ def get_page_scklad_komleks(html, url):
 def get_page_veterenar(html, url):
     global mail_2, number, city, operator, number_one, descr
     if html != None:
-        soup = BeautifulSoup(html, 'lxml')
+        try:
+            soup = BeautifulSoup(html, 'lxml')
+        except:
+            soup = ''
         try:
             name = soup.find('title').text
         except:
@@ -1353,7 +1419,10 @@ def get_page_veterenar(html, url):
 def get_page_notarius(html, url):
     global mail_2, number, city, operator, number_one, descr
     if html != None:
-        soup = BeautifulSoup(html, 'lxml')
+        try:
+            soup = BeautifulSoup(html, 'lxml')
+        except:
+            soup = ''
         try:
             name = soup.find('title').text
         except:
@@ -1413,7 +1482,10 @@ def get_page_notarius(html, url):
 def get_page_proizvoditeli(html, url):
     global mail_2, number, city, operator, number_one, descr
     if html != None:
-        soup = BeautifulSoup(html, 'lxml')
+        try:
+            soup = BeautifulSoup(html, 'lxml')
+        except:
+            soup = ''
         try:
             name = soup.find('title').text
         except:
@@ -1802,30 +1874,34 @@ def end_func(response):
 def make_all(url):
     html = get_html(url)
     if html != None:
-        get_page_data(html, url)
-        get_page_data_internet_magaz(html, url)
-        get_page_data_med_centr(html, url)
-        get_page_data_opt_company(html, url)
-        get_page_data_stomatolog(html, url)
-        get_page_data_proizvodstvo_kompany(html, url)
-        get_page_data_avtoServis(html, url)
-        get_page_Agent_nedvizhimosti(html, url)
-        get_page_ChinoMontaz(html, url)
-        get_page_remont_kvartir(html, url)
-        get_page_tur_agenstvo(html, url)
-        get_page_salon_krasot(html, url)
-        get_page_restoran(html, url)
-        get_page_transport_kompany(html, url)
-        get_page_torgov_centr(html, url)
-        get_page_otel_gost(html, url)
-        get_page_urist_advokat(html, url)
-        get_page_apteki(html, url)
-        get_page_reklam_agenstvo(html, url)
-        get_page_scklad_komleks(html, url)
-        get_page_veterenar(html, url)
-        get_page_notarius(html, url)
-        get_page_proizvoditeli(html, url)
+        try:
+            get_page_data(html, url)
+            get_page_data_internet_magaz(html, url)
+            get_page_data_med_centr(html, url)
+            get_page_data_opt_company(html, url)
+            get_page_data_stomatolog(html, url)
+            get_page_data_proizvodstvo_kompany(html, url)
+            get_page_data_avtoServis(html, url)
+            get_page_Agent_nedvizhimosti(html, url)
+            get_page_ChinoMontaz(html, url)
+            get_page_remont_kvartir(html, url)
+            get_page_tur_agenstvo(html, url)
+            get_page_salon_krasot(html, url)
+            get_page_restoran(html, url)
+            get_page_transport_kompany(html, url)
+            get_page_torgov_centr(html, url)
+            get_page_otel_gost(html, url)
+            get_page_urist_advokat(html, url)
+            get_page_apteki(html, url)
+            get_page_reklam_agenstvo(html, url)
+            get_page_scklad_komleks(html, url)
+            get_page_veterenar(html, url)
+            get_page_notarius(html, url)
+            get_page_proizvoditeli(html, url)
+        except:
+            pass
 
+        
 if __name__ == '__main__':
     multiprocessing.freeze_support()
     url_data = []
@@ -1839,13 +1915,11 @@ if __name__ == '__main__':
         
         with Pool(multiprocessing.cpu_count()) as p:
             try:
-                for _ in tqdm.tqdm(p.imap_unordered(make_all, url_data), total=len(url_data)):
+                for _ in tqdm.tqdm(p.imap_unordered(make_all, url_data[536356:4988374]), total=len(url_data[536356:4988374])):
                     pass
                 p.close()
                 p.join()
             except Exception as eee:
+                logging.error(eee)
                 print(eee)
-        # with Pool(3) as p:
-        #     p.map_async(make_all, url_data, callback=end_func)
-        #     p.close()
-        #     p.join()
+    
