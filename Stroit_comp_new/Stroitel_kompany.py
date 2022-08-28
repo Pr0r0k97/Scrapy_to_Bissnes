@@ -69,7 +69,7 @@ def scan_tel(arg):
 
 def get_page_data(html, url):
     global mail_2, number, city, operator, number_one, descr
-    if html != None:
+    if html != None and len(html) < 650000:
         try:
             soup = BeautifulSoup(html, 'lxml')
         except:
@@ -121,9 +121,6 @@ def get_page_data(html, url):
                         operator = jso['operator']
                 except:
                     number = ''
-                    jso = ''
-                    city = ''
-                    operator = ''
                 data = [(name, mail_2, city, number, operator, url, descr)]
                 print(f"{GREEN}[+] Title:{RESET} {name}\n"
                       f"{GREEN}[+] Mail:{RESET} {mail_2}\n"
@@ -139,7 +136,7 @@ def get_page_data(html, url):
 
 def get_page_data_internet_magaz(html, url):
     global mail_2, number, city, operator, number_one, descr
-    if html != None:
+    if html != None and len(html) < 650000:
         try:
             soup = BeautifulSoup(html, 'lxml')
         except:
@@ -201,7 +198,7 @@ def get_page_data_internet_magaz(html, url):
 
 def get_page_data_med_centr(html, url):
     global mail_2, number, city, operator, number_one, descr
-    if html != None:
+    if html != None and len(html) < 650000:
         try:
             soup = BeautifulSoup(html, 'lxml')
         except:
@@ -263,7 +260,7 @@ def get_page_data_med_centr(html, url):
 
 def get_page_data_opt_company(html, url):
     global mail_2, number, city, operator, number_one, descr
-    if html != None:
+    if html != None and len(html) < 650000:
         try:
             soup = BeautifulSoup(html, 'lxml')
         except:
@@ -330,7 +327,7 @@ def get_page_data_opt_company(html, url):
 
 def get_page_data_stomatolog(html, url):
     global mail_2, number, city, operator, number_one, descr
-    if html != None:
+    if html != None and len(html) < 650000:
         try:
             soup = BeautifulSoup(html, 'lxml')
         except:
@@ -392,7 +389,7 @@ def get_page_data_stomatolog(html, url):
 
 def get_page_data_proizvodstvo_kompany(html, url):
     global mail_2, number, city, operator, number_one, descr
-    if html != None:
+    if html != None and len(html) < 650000:
         try:
             soup = BeautifulSoup(html, 'lxml')
         except:
@@ -455,7 +452,7 @@ def get_page_data_proizvodstvo_kompany(html, url):
 
 def get_page_data_avtoServis(html, url):
     global mail_2, number, city, operator, number_one, descr
-    if html != None:
+    if html != None and len(html) < 650000:
         try:
             soup = BeautifulSoup(html, 'lxml')
         except:
@@ -518,7 +515,7 @@ def get_page_data_avtoServis(html, url):
 
 def get_page_Agent_nedvizhimosti(html, url):
     global mail_2, number, city, operator, number_one, descr
-    if html != None:
+    if html != None and len(html) < 650000:
         try:
             soup = BeautifulSoup(html, 'lxml')
         except:
@@ -581,7 +578,7 @@ def get_page_Agent_nedvizhimosti(html, url):
 
 def get_page_ChinoMontaz(html, url):
     global mail_2, number, city, operator, number_one, descr
-    if html != None:
+    if html != None and len(html) < 650000:
         try:
             soup = BeautifulSoup(html, 'lxml')
         except:
@@ -644,7 +641,7 @@ def get_page_ChinoMontaz(html, url):
 
 def get_page_remont_kvartir(html, url):
     global mail_2, number, city, operator, number_one, descr
-    if html != None:
+    if html != None and len(html) < 650000:
         try:
             soup = BeautifulSoup(html, 'lxml')
         except:
@@ -708,7 +705,7 @@ def get_page_remont_kvartir(html, url):
 
 def get_page_tur_agenstvo(html, url):
     global mail_2, number, city, operator, number_one, descr
-    if html != None:
+    if html != None and len(html) < 650000:
         try:
             soup = BeautifulSoup(html, 'lxml')
         except:
@@ -773,7 +770,7 @@ def get_page_tur_agenstvo(html, url):
 
 def get_page_salon_krasot(html, url):
     global mail_2, number, city, operator, number_one, descr
-    if html != None:
+    if html != None and len(html) < 650000:
         try:
             soup = BeautifulSoup(html, 'lxml')
         except:
@@ -839,7 +836,7 @@ def get_page_salon_krasot(html, url):
 
 def get_page_restoran(html, url):
     global mail_2, number, city, operator, number_one, descr
-    if html != None:
+    if html != None and len(html) < 650000:
         try:
             soup = BeautifulSoup(html, 'lxml')
         except:
@@ -902,7 +899,7 @@ def get_page_restoran(html, url):
 
 def get_page_transport_kompany(html, url):
     global mail_2, number, city, operator, number_one, descr
-    if html != None:
+    if html != None and len(html) < 650000:
         try:
             soup = BeautifulSoup(html, 'lxml')
         except:
@@ -967,7 +964,7 @@ def get_page_transport_kompany(html, url):
 
 def get_page_torgov_centr(html, url):
     global mail_2, number, city, operator, number_one, descr
-    if html != None:
+    if html != None and len(html) < 650000:
         try:
             soup = BeautifulSoup(html, 'lxml')
         except:
@@ -1031,7 +1028,7 @@ def get_page_torgov_centr(html, url):
 
 def get_page_otel_gost(html, url):
     global mail_2, number, city, operator, number_one, descr
-    if html != None:
+    if html != None and len(html) < 650000:
         try:
             soup = BeautifulSoup(html, 'lxml')
         except:
@@ -1094,7 +1091,7 @@ def get_page_otel_gost(html, url):
 
 def get_page_urist_advokat(html, url):
     global mail_2, number, city, operator, number_one, descr
-    if html != None:
+    if html != None and len(html) < 650000:
         try:
             soup = BeautifulSoup(html, 'lxml')
         except:
@@ -1159,7 +1156,7 @@ def get_page_urist_advokat(html, url):
 
 def get_page_apteki(html, url):
     global mail_2, number, city, operator, number_one, descr
-    if html != None:
+    if html != None and len(html) < 650000:
         try:
             soup = BeautifulSoup(html, 'lxml')
         except:
@@ -1221,7 +1218,7 @@ def get_page_apteki(html, url):
 
 def get_page_reklam_agenstvo(html, url):
     global mail_2, number, city, operator, number_one, descr
-    if html != None:
+    if html != None and len(html) < 650000:
         try:
             soup = BeautifulSoup(html, 'lxml')
         except:
@@ -1289,7 +1286,7 @@ def get_page_reklam_agenstvo(html, url):
 
 def get_page_scklad_komleks(html, url):
     global mail_2, number, city, operator, number_one, descr
-    if html != None:
+    if html != None and len(html) < 650000:
         try:
             soup = BeautifulSoup(html, 'lxml')
         except:
@@ -1354,7 +1351,7 @@ def get_page_scklad_komleks(html, url):
 
 def get_page_veterenar(html, url):
     global mail_2, number, city, operator, number_one, descr
-    if html != None:
+    if html != None and len(html) < 650000:
         try:
             soup = BeautifulSoup(html, 'lxml')
         except:
@@ -1418,7 +1415,7 @@ def get_page_veterenar(html, url):
 
 def get_page_notarius(html, url):
     global mail_2, number, city, operator, number_one, descr
-    if html != None:
+    if html != None and len(html) < 650000:
         try:
             soup = BeautifulSoup(html, 'lxml')
         except:
@@ -1481,7 +1478,7 @@ def get_page_notarius(html, url):
 
 def get_page_proizvoditeli(html, url):
     global mail_2, number, city, operator, number_one, descr
-    if html != None:
+    if html != None and len(html) < 650000:
         try:
             soup = BeautifulSoup(html, 'lxml')
         except:
@@ -1859,12 +1856,18 @@ def insert_db(data):
     for s in urls:
         pass
     cursor.execute(f"SELECT hrefs FROM pars WHERE hrefs = '{s}'")
-    if cursor.fetchone() is None:
-        cursor.executemany("INSERT INTO pars VALUES (?,?,?,?,?,?,?)", data)
-        connection.commit()
-        print(f"{RESET}Запись Добавлена ")
-    else:
-        print(f"{RESET}Уже есть")
+    try:
+        if cursor.fetchone() is None:
+            cursor.executemany("INSERT INTO pars VALUES (?,?,?,?,?,?,?)", data)
+            connection.commit()
+            print(f"{RESET}Запись Добавлена ")
+        else:
+            print(f"{RESET}Уже есть")
+    finally:
+        connection.close()
+
+   
+        
 
 
 def end_func(response):
@@ -1873,7 +1876,7 @@ def end_func(response):
 
 def make_all(url):
     html = get_html(url)
-    if html != None:
+    if html != None and len(html) < 650000:
         try:
             get_page_data(html, url)
             get_page_data_internet_magaz(html, url)
@@ -1900,26 +1903,28 @@ def make_all(url):
             get_page_proizvoditeli(html, url)
         except:
             pass
+        
 
         
 if __name__ == '__main__':
     multiprocessing.freeze_support()
     url_data = []
-    
-    results = []
-    with open("ru_domains_base.txt", "r") as f:
+    f = open('ru_domains_base.txt','r')
+    try:
+    # работа с файлом
         for line in f:
             url = 'https://' + line.lower().strip()
             url_data.append(url)
-        print(multiprocessing.cpu_count() * 3)
+    finally:
+        f.close()
         
-        with Pool(multiprocessing.cpu_count()) as p:
-            try:
-                for _ in tqdm.tqdm(p.imap_unordered(make_all, url_data[536356:4988374]), total=len(url_data[536356:4988374])):
-                    pass
-                p.close()
-                p.join()
-            except Exception as eee:
-                logging.error(eee)
-                print(eee)
+    with Pool(multiprocessing.cpu_count()*6) as p:
+        try:
+            for _ in tqdm.tqdm(p.imap_unordered(make_all, url_data[3834438:4988374]), total=len(url_data[3834438:4988374])):
+                pass
+            p.close()
+            p.join()
+        except Exception as eee:
+            logging.error(eee)
+            print(eee)
     
